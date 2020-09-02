@@ -10,7 +10,7 @@ import XCTest
 @testable import BigShows
 
 class BigShowsTests: XCTestCase {
-    //Test cooret parsing ViewModels
+    //Test correct creation of ViewModels
     
     class MockShowDetailService: ShowDetailServiceProtocol{
         func fetchShowDetails(id: Int, completion: @escaping (Result<ShowDetail, Error>) -> ()) {}
@@ -31,5 +31,35 @@ class BigShowsTests: XCTestCase {
         XCTAssertEqual(showDetailVM.genres, "gnre, gnre2")
         XCTAssertEqual(showDetailVM.days, "time | Monday, Tues")
         XCTAssertEqual(showDetailVM.summary, "Test summary")
+    }
+    
+    class MockEpisodesService: EpisodesServiceProtocol{
+        let episodes: [Episode]
+        
+        init(_ episodes: Episode...){
+            self.episodes = episodes
+        }
+        
+        func fetchsEpisodes(showID: Int, completion: @escaping (Result<[Episode], Error>) -> ()) {
+            completion(.success(episodes))
+        }
+    }
+    
+    func test_Season(){
+        let episode1_1 = Episode(id: 1, name: "Ep1", image: nil, summary: nil, number: 1, season: 1)
+        let episode1_2 = Episode(id: 2, name: "Ep2", image: nil, summary: nil, number: 2, season: 1)
+        let episode2_1 = Episode(id: 3, name: "Ep1", image: nil, summary: nil, number: 1, season: 2)
+        
+        let episodesViewModel = EpisodesViewModel(service: MockEpisodesService(episode1_1, episode1_2, episode2_1), showID: 1)
+        episodesViewModel.fetchSeasons()
+        XCTAssertEqual(episodesViewModel.seasonsViewModel.count, 2)
+        XCTAssertEqual(episodesViewModel.seasonsViewModel, [1,2])
+        XCTAssertEqual(episodesViewModel.episodesViewModel.count, 2)
+        XCTAssertEqual(episodesViewModel.episodesViewModel[0].name, "1. Ep1")
+        XCTAssertEqual(episodesViewModel.episodesViewModel[1].name, "2. Ep2")
+        
+        episodesViewModel.updateEpisodes(index: 1)
+        XCTAssertEqual(episodesViewModel.episodesViewModel.count, 1)
+        XCTAssertEqual(episodesViewModel.episodesViewModel[0].name, "1. Ep1")
     }
 }
