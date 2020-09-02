@@ -9,8 +9,8 @@
 import XCTest
 @testable import BigShows
 
-class StringTests: XCTest{
-    func test_remoedHTML(){
+class StringTests: XCTestCase{
+    func test_removedHTML(){
         let original = "<p>Hola mundo</p>"
         XCTAssertEqual(original.withoutHtmlTags, "Hola mundo")
     }

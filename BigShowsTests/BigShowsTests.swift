@@ -10,25 +10,26 @@ import XCTest
 @testable import BigShows
 
 class BigShowsTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    //Test cooret parsing ViewModels
+    
+    class MockShowDetailService: ShowDetailServiceProtocol{
+        func fetchShowDetails(id: Int, completion: @escaping (Result<ShowDetail, Error>) -> ()) {}
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func test_showDetailViewModel(){
+        let showPreview = ShowPreview.init(id: 1, name: "Test name", image: Image(medium: "urlMedium", original: "urlOriginal"))
+        let showDetailVM = ShowDetailViewModel(service: MockShowDetailService(), showPreview: showPreview)
+        XCTAssertEqual(showDetailVM.name, "Test name")
+        XCTAssertEqual(showDetailVM.image?.medium, "urlMedium")
+        XCTAssertEqual(showDetailVM.image?.original, "urlOriginal")
+        
+        let model = ShowDetail(id: 3, name: "Test name 2", image: Image(medium: "medium", original: "original"), schedule: .init(time: "time", days: ["Monday", "Tues"]), genres: ["gnre", "gnre2"], summary: "Test summary")
+        showDetailVM.fillWithModel(model)
+        XCTAssertEqual(showDetailVM.name, "Test name 2")
+        XCTAssertEqual(showDetailVM.image?.medium, "medium")
+        XCTAssertEqual(showDetailVM.image?.original, "original")
+        XCTAssertEqual(showDetailVM.genres, "gnre, gnre2")
+        XCTAssertEqual(showDetailVM.days, "time | Monday, Tues")
+        XCTAssertEqual(showDetailVM.summary, "Test summary")
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }
