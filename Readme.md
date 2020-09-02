@@ -8,4 +8,4 @@ This project only uses one external dependency:
 
 ### LBTATools
 
-This framwork is used to build the UI programmaticaly faster. It provides anchor helpers.
+This dependency is used to build the UI programmaticaly faster. It provides anchor helpers.
