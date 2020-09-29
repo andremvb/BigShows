@@ -25,20 +25,20 @@ class MainCoordinator{
     }
 }
 
-extension MainCoordinator: ShowsNavigator{
+extension MainCoordinator: ShowsNavigator {
     func goToShowDetail(_ show: ShowPreview) {
-        
         let episodesVC = createEpisodesVC(showID: show.id)
         let service = ShowsService()
         let viewModel = ShowDetailViewModel(service: service, showPreview: show)
-        let showsDetailViewController = ShowDetailViewController(viewModel: viewModel, episodesViewController: episodesVC)
+        let showsDetailViewController = ShowDetailViewController(viewModel: viewModel,
+                                                                 episodesViewController: episodesVC)
         
         navigationController.pushViewController(showsDetailViewController, animated: true)
     }
 }
 
 //Factory-like methods
-extension MainCoordinator{
+extension MainCoordinator {
     private func createEpisodesVC(showID: Int) -> EpisodesViewController{
         let service = EpisodesService()
         let viewmodel = EpisodesViewModel(service: service, showID: showID)

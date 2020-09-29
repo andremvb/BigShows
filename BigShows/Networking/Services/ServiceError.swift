@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum ServiceError: Error{
+enum ServiceError: Error {
     case connectivity
     case invalidData
     case decode
