@@ -9,12 +9,13 @@
 import Foundation
 import UIKit
 import LBTATools
+import SwiftUI
 
 class ShowPreviewCell: UICollectionViewCell{
     
-    let uuid = UUID().uuidString
-    let nameLabel = UILabel(text: nil, font: .regular(), textColor: .black)
-    let imageView = UIImageView(image: nil, contentMode: .scaleAspectFill)
+    private let uuid = UUID().uuidString
+    private let nameLabel = UILabel(text: nil, font: .regular(), textColor: .black, numberOfLines: 0)
+    private let imageView = UIImageView(image: nil, contentMode: .scaleAspectFill)
     
     var showPreview: ShowPreviewViewModel!{
         didSet{
@@ -30,13 +31,12 @@ class ShowPreviewCell: UICollectionViewCell{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let decorator = UIView(backgroundColor: .appYellow).withSize(.init(width: 4, height: 14))
-        decorator.roundCorners(radius: 2)
-        let topStack = UIView().hstack(decorator, nameLabel, spacing: 8, alignment: .center)
-        stack(topStack,
-              imageView,
-              spacing: 4)
-        imageView.roundCorners(radius: 20)
+        hstack(imageView,
+               nameLabel,
+               spacing: 5)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 234 / 167).isActive = true
+        imageView.roundCorners(radius: 4)
         
         imageView.backgroundColor = .init(white: 0.97, alpha: 1)
     }
@@ -45,3 +45,16 @@ class ShowPreviewCell: UICollectionViewCell{
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+#if DEBUG
+@available(iOS 13, *)
+struct ShowPreviewCellPreview: PreviewProvider {
+    static var previews: some View {
+        let vm = ShowPreviewViewModel(.fake())
+        let cell = ShowPreviewCell()
+        cell.showPreview = vm
+        return cell.asPreview()
+            .previewLayout(.fixed(width: 200, height: 50))
+    }
+}
+#endif

@@ -134,7 +134,8 @@ extension ShowsViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.frame.width - cellSpacing * 3) / 2
-        return .init(width: width, height: width * 234 / 167)
+//        return .init(width: width, height: width * 234 / 167)
+        return .init(width: width, height: 50)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
